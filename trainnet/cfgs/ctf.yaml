@@ -1,0 +1,67 @@
+
+DATA_CONFIG:
+    DATASET: OCMR_Dataset
+
+    DATA_PATH: '../data'
+    SAVE_PATH: '../data'
+
+
+    DATA_SPLIT: {
+        'train': train,
+        'test': val
+    }
+
+    INFO_PATH: {
+        'train': [ dataset_train_infos.pkl ],
+        'test': [ dataset_test_infos.pkl ],
+    }
+
+    DATA_PROCESSOR:
+        -   NAME: scale_kt
+            SCALE: 10000
+
+        - NAME: crop_kt_coil_sens
+          CROP_TIME: 0 #take the first 10 time frame
+          CROP_ROW: 0  #crop 10% of rows above and below respectively
+
+#        -   NAME: crop_kt_coil_sens
+#            CROP_TIME: 15
+#            CROP_ROW: 0.1
+
+    ACC: 12
+
+    SHOW_ITER: 20
+
+
+MODEL:
+    NAME: CTFModel
+
+    BACKBONE:
+        NAME: CTF_Backbone
+
+    HEAD:
+        NAME: CTF_Head
+        alfa: 1
+        beta: 1
+        gamma: 1
+        cascades: 4
+
+
+
+OPTIMIZATION:
+    BATCH_SIZE_PER_GPU: 1
+    NUM_EPOCHS: 50
+
+    OPTIMIZER: adam_onecycle
+    LR: 0.001
+    WEIGHT_DECAY: 0.01
+    MOMENTUM: 0.9
+    MOMS: [0.95, 0.85]
+    PCT_START: 0.4
+    DIV_FACTOR: 10
+    DECAY_STEP_LIST: [35, 45]
+    LR_DECAY: 0.1
+    LR_CLIP: 0.0000001
+    LR_WARMUP: False
+    WARMUP_EPOCH: 1
+    GRAD_NORM_CLIP: 10

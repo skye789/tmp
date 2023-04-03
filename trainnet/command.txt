@@ -1,0 +1,2 @@
+cd TrainNet/tools
+python train.py --cfg_file ../cfgs/kt_NEXT.yaml
